@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: ro.teamnet.zth.api.em.EntitiyManagerImplTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.354 sec
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.328 sec

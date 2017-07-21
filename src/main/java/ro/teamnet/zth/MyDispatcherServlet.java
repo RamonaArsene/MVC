@@ -78,7 +78,7 @@ public class MyDispatcherServlet extends HttpServlet {
 
     private Object dispatch(HttpServletRequest request, HttpServletResponse response, String method) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, IOException {
 //
-//        Object results = null;
+        Object results = null;
 //        String path = request.getPathInfo();
 //
 //        if(path.equals("/employees"))
@@ -113,11 +113,10 @@ public class MyDispatcherServlet extends HttpServlet {
         for (Method classMethod : classMethods) {
             if(classMethod.getName().equals(methodAttributes.getMethodName())){
                 response.getWriter().println(controller.getClass().getName());
-                return controller.getClass().getMethod(methodAttributes.getMethodName()).invoke(controller);
+                results = controller.getClass().getMethod(methodAttributes.getMethodName()).invoke(controller);
+                return results;
             }
-
         }
-
         return null;
     }
 

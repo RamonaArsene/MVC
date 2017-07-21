@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="2" failures="0" name="ro.teamnet.zth.api.database.DBManagerTest" time="0.84" errors="0" skipped="0">
+<testsuite tests="2" failures="0" name="ro.teamnet.zth.api.database.DBManagerTest" time="0.598" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2017.1.4"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
@@ -62,6 +62,6 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="ro.teamnet.zth.api.database.DBManagerTest" name="testCheckConnectionMethod" time="0.814"/>
-  <testcase classname="ro.teamnet.zth.api.database.DBManagerTest" name="testNewConnectionMethod" time="0.026"/>
+  <testcase classname="ro.teamnet.zth.api.database.DBManagerTest" name="testCheckConnectionMethod" time="0.574"/>
+  <testcase classname="ro.teamnet.zth.api.database.DBManagerTest" name="testNewConnectionMethod" time="0.024"/>
 </testsuite>
