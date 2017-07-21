@@ -13,6 +13,7 @@ ro\teamnet\zth\api\em\EntityManagerImpl.class
 ro\teamnet\zth\api\annotations\Id.class
 ro\teamnet\zth\appl\dao\LocationDao.class
 ro\teamnet\zth\fmk\MethodAttributes.class
+ro\teamnet\zth\MyDispatcherServlet.class
 ro\teamnet\zth\api\em\QueryBuilder.class
 ro\teamnet\zth\appl\domain\Location.class
 ro\teamnet\zth\api\em\ColumnInfo.class

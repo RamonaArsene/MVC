@@ -9,12 +9,12 @@ import ro.teamnet.zth.api.annotations.RequestMethod;
 @Controller(urlPath = "/employees")
 public class EmployeeController {
 
-    String currentMethod;
 
     @RequestMethod(urlPath = "/all", methodType = "GET")
     public String getAllEmployees(){
         return "allEmployees";
     }
+
     @RequestMethod(urlPath = "/one", methodType = "GET")
     public String getOneEmployee(){
         return "oneRandomEmployee";

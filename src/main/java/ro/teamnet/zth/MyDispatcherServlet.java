@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,16 +27,20 @@ public class MyDispatcherServlet extends HttpServlet {
     
     Map<String, MethodAttributes> allowedMethods = new HashMap<String, MethodAttributes>();
 
-    public void init(){
+    public void init( ) {
         MethodAttributes methodAttributes = new MethodAttributes();
-        Class clazz = EmployeeController.class;
-        methodAttributes.setControllerClass("EmployeeController");
+        Class clazz = DepartmentController.class;
+        methodAttributes.setControllerClass("DepartmentController");
         Controller controller = (Controller) clazz.getAnnotation(Controller.class);
-        String url = controller.urlPath();
-        for (java.lang.reflect.Method method : clazz.getDeclaredMethods()) {
-            url = controller.urlPath() + method.getAnnotation(RequestMethod.class).urlPath() + method.getAnnotation(RequestMethod.class).methodType();
-            methodAttributes.setControllerClass("EmployeeController");
-            methodAttributes.setMethodType(method.getAnnotation(RequestMethod.class).methodType());
+        //resp.getWriter().println("init " + controller.urlPath());
+        String url;
+        for (java.lang.reflect.Method method : DepartmentController.class.getDeclaredMethods()) {
+            url = controller.urlPath() + method.getAnnotation(RequestMethod.class).urlPath().toString() + method.getAnnotation(RequestMethod.class).methodType().toString();
+            //resp.getWriter().println("url init: " + url);
+            methodAttributes.setControllerClass("DepartmentController");
+            methodAttributes.setMethodType(method.getAnnotation(RequestMethod.class).methodType().toString());
+            methodAttributes.setMethodName(method.getName());
+            //resp.getWriter().println("method name:" + methodAttributes.getMethodName());
             allowedMethods.put(url, methodAttributes);
         }
 
@@ -63,6 +69,7 @@ public class MyDispatcherServlet extends HttpServlet {
 
     public void dispatchReply(HttpServletRequest request, HttpServletResponse response, String method) throws IOException {
         try{
+
             Object resultToDisplay = dispatch(request, response, method);
             reply(response, resultToDisplay);
         }catch(Exception e){
@@ -76,10 +83,9 @@ public class MyDispatcherServlet extends HttpServlet {
 
     }
 
-    private Object dispatch(HttpServletRequest request, HttpServletResponse response, String method) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, IOException {
-//
+    private Object dispatch(HttpServletRequest request, HttpServletResponse response, String method) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, IOException, ServletException {
         Object results = null;
-//        String path = request.getPathInfo();
+        //init(response);
 //
 //        if(path.equals("/employees"))
 //            results = "Employees";
@@ -104,23 +110,35 @@ public class MyDispatcherServlet extends HttpServlet {
 //                }
 
         String key = request.getPathInfo() + method;
-        String[] path = request.getPathInfo().split("/");
+        response.getWriter().println("key" + key);
         MethodAttributes methodAttributes = allowedMethods.get(key);
-        Object controller = Class.forName(methodAttributes.getControllerClass()).newInstance();
-       // return controller.getClass().getName();
-        java.lang.reflect.Method [] classMethods = controller.getClass().getDeclaredMethods();
+        response.getWriter().println("key value" + allowedMethods.get(key));
 
-        for (Method classMethod : classMethods) {
-            if(classMethod.getName().equals(methodAttributes.getMethodName())){
-                response.getWriter().println(controller.getClass().getName());
-                results = controller.getClass().getMethod(methodAttributes.getMethodName()).invoke(controller);
-                return results;
-            }
-        }
-        return null;
+
+        response.getWriter().println(methodAttributes.getMethodName());
+        Object controller = Class.forName(methodAttributes.getControllerClass()).newInstance();
+        results = controller.getClass().getDeclaredMethod(methodAttributes.getMethodName()).invoke(controller);
+//
+//        for (Method classMethod : classMethods) {
+//            if(classMethod.getName().equals(methodAttributes.getMethodName())){
+//                logHeader(controller.getClass().getMethod(methodAttributes.getMethodName()).toString());
+//            }
+//        }
+        return results;
     }
 
     public void sendExceptionError (HttpServletResponse response, String err) throws IOException {
+
+        logHeader(err);
         response.getWriter().write(err);
+    }
+
+    public static void logHeader(String headerName){
+
+        try(RandomAccessFile randomAccessFile=new RandomAccessFile("D://out.log","rw")) {
+            randomAccessFile.writeBytes( headerName + ":" +"\r\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
